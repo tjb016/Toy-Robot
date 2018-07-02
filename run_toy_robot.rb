@@ -1,4 +1,4 @@
-# Runs the Toy Robot SImular via Command Line interface
+# Runs the Toy Robot Simulator via Command Line interface
 
 require './robot.rb'
 require './table.rb'

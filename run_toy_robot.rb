@@ -1,6 +1,16 @@
-require './robot.rb'
+# Runs the Toy Robot SImular via Command Line interface
 
-robot = Robot.new()
+require './robot.rb'
+require './table.rb'
+require './command_handler.rb'
+require './command_handler.rb'
+require './command_move_robot.rb'
+require './command_place_robot.rb'
+require './command_report_robot_position.rb'
+require './command_turn_robot_left.rb'
+require './command_turn_robot_right.rb'
+
+commandHandler = CommandHandler.new(Robot.new(), Table.new())
 
 puts "Welcome to the Toy Robot Simulator, which is controlled with the following commands:
       PLACE X,Y,F - X = x position, Y = y position, F = Facing ('NORTH', 'SOUTH', 'EAST', 'WEST')
@@ -18,17 +28,15 @@ while exit == false
   if user_input == 'EXIT'
     exit = true
   elsif user_input == 'MOVE'
-    robot.move()
+    commandHandler.execute(CommandMoveRobot.new())
   elsif user_input == 'LEFT'
-    robot.left()
+    commandHandler.execute(CommandTurnRobotLeft.new())
   elsif user_input == 'RIGHT'
-    robot.right()
+    commandHandler.execute(CommandTurnRobotRight.new())
   elsif user_input == 'REPORT'
-    puts robot.report()
+    commandHandler.execute(CommandReportRobotPosition.new())
   elsif user_input.match(/^PLACE (\d*),(\d*),(\w*)$/)
     parameters = user_input.match(/^PLACE (\d*),(\d*),(\w*)$/)
-    if robot.place(parameters[1].to_i, parameters[2].to_i, parameters[3]) != true
-      puts "Unable to place robot at #{parameters[1]},#{parameters[2]},#{parameters[3]}."
-    end
+    commandHandler.execute(CommandPlaceRobot.new(parameters[1].to_i, parameters[2].to_i, parameters[3]))
   end
 end
